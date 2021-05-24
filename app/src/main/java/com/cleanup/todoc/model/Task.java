@@ -128,4 +128,25 @@ public class Task {
             return (int) (left.creationTimestamp - right.creationTimestamp);
         }
     }
+
+
+    /**
+     * Comparator to sort task from A to Z
+     */
+    public static class TaskAZProjectComparator implements Comparator<Task> {
+        @Override
+        public int compare(Task left, Task right) {
+            return left.getProject().getName().compareTo(right.getProject().getName());
+        }
+    }
+
+    /**
+     * Comparator to sort task from Z to A
+     */
+    public static class TaskZAProjectComparator implements Comparator<Task> {
+        @Override
+        public int compare(Task left, Task right) {
+            return right.getProject().getName().compareTo(left.getProject().getName());
+        }
+    }
 }
