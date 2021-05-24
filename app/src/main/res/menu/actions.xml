@@ -26,6 +26,17 @@
                 android:id="@+id/filter_recent_first"
                 android:title="@string/sort_recent_first"
                 app:showAsAction="never|withText" />
+
+            <item
+                android:id="@+id/filter_alphabeticalProject"
+                android:title="@string/sort_alphabeticalProject"
+                app:showAsAction="never|withText" />
+            <item
+                android:id="@+id/filter_alphabetical_invertedProject"
+                android:title="@string/sort_alphabetical_invertProject"
+                app:showAsAction="never|withText" />
+
+
         </menu>
     </item>
 

@@ -3,8 +3,10 @@
 
     <string name="label_action_filter">Filter</string>
 
-    <string name="sort_alphabetical">A -&gt; Z</string>
-    <string name="sort_alphabetical_invert">Z -&gt; A</string>
+    <string name="sort_alphabetical">Tasks : A -&gt; Z</string>
+    <string name="sort_alphabetical_invert">Tasks : Z -&gt; A</string>
+    <string name="sort_alphabeticalProject">Projects : A -&gt; Z</string>
+    <string name="sort_alphabetical_invertProject">Projects : Z -&gt; A</string>
     <string name="sort_oldest_first">Les plus anciens d’abord</string>
     <string name="sort_recent_first">Les plus récents d’abord</string>
 

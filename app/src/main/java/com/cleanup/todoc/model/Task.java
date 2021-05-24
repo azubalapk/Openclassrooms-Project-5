@@ -131,7 +131,7 @@ public class Task {
 
 
     /**
-     * Comparator to sort task from A to Z
+     * Comparator to sort task project name from A to Z
      */
     public static class TaskAZProjectComparator implements Comparator<Task> {
         @Override
@@ -141,7 +141,7 @@ public class Task {
     }
 
     /**
-     * Comparator to sort task from Z to A
+     * Comparator to sort task project name from Z to A
      */
     public static class TaskZAProjectComparator implements Comparator<Task> {
         @Override

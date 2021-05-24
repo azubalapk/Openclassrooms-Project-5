@@ -1,5 +1,6 @@
 package com.cleanup.todoc.ui;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -99,23 +100,44 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.filter_alphabetical :
+                sortMethod = SortMethod.ALPHABETICAL;
+                getTasks();
+                return true;
+            case R.id.filter_alphabetical_inverted:
+                sortMethod = SortMethod.ALPHABETICAL_INVERTED;
+                getTasks();
+                return true;
+            case R.id.filter_oldest_first :
+                sortMethod = SortMethod.OLD_FIRST;
+                getTasks();
+                return true;
+            case R.id.filter_recent_first :
+                sortMethod = SortMethod.RECENT_FIRST;
+                getTasks();
+                return true;
 
-        if (id == R.id.filter_alphabetical) {
-            sortMethod = SortMethod.ALPHABETICAL;
-        } else if (id == R.id.filter_alphabetical_inverted) {
-            sortMethod = SortMethod.ALPHABETICAL_INVERTED;
-        } else if (id == R.id.filter_oldest_first) {
-            sortMethod = SortMethod.OLD_FIRST;
-        } else if (id == R.id.filter_recent_first) {
-            sortMethod = SortMethod.RECENT_FIRST;
+            case R.id.filter_alphabeticalProject:
+                sortMethod = SortMethod.ALPHABETICAL_PROJECT;
+                getTasks();
+                return true;
+
+            case R.id.filter_alphabetical_invertedProject:
+                sortMethod = SortMethod.ALPHABETICAL_INVERTED_PROJECT;
+                getTasks();
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+
         }
 
-        getTasks();
 
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -216,6 +238,13 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                     Collections.sort(tasks, new Task.TaskOldComparator());
                     break;
 
+                case ALPHABETICAL_PROJECT:
+                    Collections.sort(tasks, new Task.TaskAZProjectComparator());
+                    break;
+                case ALPHABETICAL_INVERTED_PROJECT:
+                    Collections.sort(tasks, new Task.TaskZAProjectComparator());
+                    break;
+
             }
             adapter.updateTasks(tasks);
         }
@@ -271,6 +300,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         RECENT_FIRST,
 
         OLD_FIRST,
+
+        ALPHABETICAL_PROJECT,
+
+        ALPHABETICAL_INVERTED_PROJECT,
 
         NONE
     }
