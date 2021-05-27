@@ -93,4 +93,38 @@ public class TaskUnitTest {
         assertSame(tasks.get(1), task2);
         assertSame(tasks.get(2), task3);
     }
+
+    @Test
+    public void test_projects_az_comparator() {
+        final Task task1 = new Task(3,  "aaa", 123);
+        final Task task2 = new Task(2,  "zzz", 124);
+        final Task task3 = new Task(1,  "hhh", 125);
+
+        final ArrayList<Task> tasks = new ArrayList<>();
+        tasks.add(task1);
+        tasks.add(task2);
+        tasks.add(task3);
+        Collections.sort(tasks, new Task.TaskAZProjectComparator());
+
+        assertSame(tasks.get(0), task1);
+        assertSame(tasks.get(1), task2);
+        assertSame(tasks.get(2), task3);
+    }
+
+    @Test
+    public void test_projects_za_comparator() {
+        final Task task1 = new Task(1,  "aaa", 123);
+        final Task task2 = new Task(2,  "zzz", 124);
+        final Task task3 = new Task(3,  "hhh", 125);
+
+        final ArrayList<Task> tasks = new ArrayList<>();
+        tasks.add(task1);
+        tasks.add(task2);
+        tasks.add(task3);
+        Collections.sort(tasks, new Task.TaskZAProjectComparator());
+
+        assertSame(tasks.get(0), task1);
+        assertSame(tasks.get(1), task2);
+        assertSame(tasks.get(2), task3);
+    }
 }
