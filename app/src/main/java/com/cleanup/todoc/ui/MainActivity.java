@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
     private Project[] allProjects = Project.getAllProjects();
 
-    private TaskViewModel mTaskViewModel;
+    public TaskViewModel mTaskViewModel;
 
     @NonNull
     private final ArrayList<Task> tasks = new ArrayList<>();

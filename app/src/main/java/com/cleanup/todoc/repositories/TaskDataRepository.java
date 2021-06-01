@@ -25,4 +25,6 @@ public class TaskDataRepository {
     public void deleteTask(Task task) {
         mTaskDao.deleteTask(task);
     }
+
+    public void deleteAllTask(){mTaskDao.deleteAllTask();}
 }

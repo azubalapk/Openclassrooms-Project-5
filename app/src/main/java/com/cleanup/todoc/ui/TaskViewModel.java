@@ -47,5 +47,7 @@ public class TaskViewModel extends ViewModel {
     public void deleteTask(Task task) {
         mExecutor.execute(() -> mTaskDataSource.deleteTask(task));
     }
+
+    public void deleteAllTask() {mExecutor.execute(mTaskDataSource::deleteAllTask);}
 }
 
