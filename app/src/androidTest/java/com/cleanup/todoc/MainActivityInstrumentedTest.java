@@ -11,6 +11,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.ui.MainActivity;
 
 import org.junit.Before;
@@ -23,10 +24,16 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.cleanup.todoc.TestUtils.withRecyclerView;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -73,23 +80,27 @@ public class MainActivityInstrumentedTest {
 
         MainActivity activity = rule.getActivity();
 
+
+
         // Add Example Tasks for Test Sort
         onView(withId(R.id.fab_add_task)).perform(click());
         onView(withId(R.id.txt_task_name)).perform(replaceText("aaa Tâche example"));
+        onView(withId(R.id.project_spinner)).perform(click());
+        onView(withText(containsString("Projet Circus"))).inRoot(isPlatformPopup()).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
 
 
         onView(withId(R.id.fab_add_task)).perform(click());
         onView(withId(R.id.txt_task_name)).perform(replaceText("zzz Tâche example"));
-
         onView(withId(R.id.project_spinner)).perform(click());
-
-
+        onView(withText(containsString("Projet Tartampion"))).inRoot(isPlatformPopup()).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
 
 
         onView(withId(R.id.fab_add_task)).perform(click());
         onView(withId(R.id.txt_task_name)).perform(replaceText("hhh Tâche example"));
+        onView(withId(R.id.project_spinner)).perform(click());
+        onView(withText(containsString("Projet Lucidia"))).inRoot(isPlatformPopup()).perform(click());
         onView(withId(android.R.id.button1)).perform(click());
 
         onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.lbl_task_name)).check(matches(withText("aaa Tâche example")));
@@ -137,17 +148,17 @@ public class MainActivityInstrumentedTest {
                 .check(matches(withText("aaa Tâche example")));
 
         // Sort alphabetical Project
-        //onView(withId(R.id.action_filter)).perform(click());
-        //onView(withText(R.string.sort_alphabeticalProject)).perform(click());
-        //onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.lbl_project_name)).check(matches(withText("Projet Circus")));
-        //onView(withRecyclerView(R.id.list_tasks).atPositionOnView(1, R.id.lbl_project_name)).check(matches(withText("Projet Lucidia")));
-        //onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_project_name)).check(matches(withText("Projet Tartampion")));
+        onView(withId(R.id.action_filter)).perform(click());
+        onView(withText(R.string.sort_alphabeticalProject)).perform(click());
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.lbl_project_name)).check(matches(withText("Projet Circus")));
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(1, R.id.lbl_project_name)).check(matches(withText("Projet Lucidia")));
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_project_name)).check(matches(withText("Projet Tartampion")));
 
         // Sort alphabetical inverted Project
-        //onView(withId(R.id.action_filter)).perform(click());
-        //onView(withText(R.string.sort_alphabetical_invertProject)).perform(click());
-        //onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.lbl_project_name)).check(matches(withText("Projet Tartampion")));
-        //onView(withRecyclerView(R.id.list_tasks).atPositionOnView(1, R.id.lbl_project_name)).check(matches(withText("Projet Lucidia")));
-        //onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_project_name)).check(matches(withText("Projet Circus")));
+        onView(withId(R.id.action_filter)).perform(click());
+        onView(withText(R.string.sort_alphabetical_invertProject)).perform(click());
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(0, R.id.lbl_project_name)).check(matches(withText("Projet Tartampion")));
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(1, R.id.lbl_project_name)).check(matches(withText("Projet Lucidia")));
+        onView(withRecyclerView(R.id.list_tasks).atPositionOnView(2, R.id.lbl_project_name)).check(matches(withText("Projet Circus")));
     }
 }
