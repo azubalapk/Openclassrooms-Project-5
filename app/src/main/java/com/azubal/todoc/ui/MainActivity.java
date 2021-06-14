@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 return true;
 
             default:
-                getTasks();
+
                 return super.onOptionsItemSelected(item);
 
         }
