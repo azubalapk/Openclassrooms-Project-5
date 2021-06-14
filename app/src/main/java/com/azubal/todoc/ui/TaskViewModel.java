@@ -40,6 +40,7 @@ public class TaskViewModel extends ViewModel {
         return mTaskDataSource.getTasks();
     }
 
+
     public void createTask(Task task) {
         mExecutor.execute(() -> mTaskDataSource.createTask(task));
     }
@@ -49,5 +50,19 @@ public class TaskViewModel extends ViewModel {
     }
 
     public void deleteAllTask() {mExecutor.execute(mTaskDataSource::deleteAllTask);}
+
+
+    public LiveData<List<Task>> getTasksSortByAscTaskName() { return mTaskDataSource.getTasksSortByAscName();}
+    public LiveData<List<Task>> getTasksSortByDescTaskName() { return mTaskDataSource.getTasksSortByDescName();}
+
+    public LiveData<List<Task>> getTasksSortByAscNumberTime() { return mTaskDataSource.getTasksSortByAscNumberTime();}
+    public LiveData<List<Task>> getTasksSortByDescNumberTime() { return mTaskDataSource.getTasksSortByDescNumberTime();}
+
+    public LiveData<List<Task>> getTasksSortByAscProjectName() { return mTaskDataSource.getTasksSortByAscProjectName();}
+    public LiveData<List<Task>> getTasksSortByDescProjectName() { return mTaskDataSource.getTasksSortByDescProjectName();}
+
+
+
+
 }
 

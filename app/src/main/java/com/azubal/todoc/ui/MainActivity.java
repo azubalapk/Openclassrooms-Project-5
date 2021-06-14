@@ -3,13 +3,6 @@ package com.azubal.todoc.ui;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +12,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.azubal.todoc.R;
 import com.azubal.todoc.database.injections.Injection;
 import com.azubal.todoc.database.injections.ViewModelFactory;
@@ -26,27 +27,18 @@ import com.azubal.todoc.model.Project;
 import com.azubal.todoc.model.Task;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TasksAdapter.DeleteTaskListener {
 
-    private Project[] allProjects = Project.getAllProjects();
-
-    public TaskViewModel mTaskViewModel;
-
     @NonNull
     private final ArrayList<Task> tasks = new ArrayList<>();
-
     private final TasksAdapter adapter = new TasksAdapter(tasks, this);
-
-    @NonNull
-    private SortMethod sortMethod = SortMethod.NONE;
-
+    public TaskViewModel mTaskViewModel;
     @Nullable
     public AlertDialog dialog = null;
-
+    private Project[] allProjects = Project.getAllProjects();
     @Nullable
     private EditText dialogEditText = null;
 
@@ -56,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private RecyclerView listTasks;
 
     private TextView lblNoTasks;
+
+    int idSort = 0 ;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +68,44 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         configureViewModel();
         getProjects();
-        getTasks();
+
+
+        switch(savedInstanceState != null ? savedInstanceState.getInt("idSort") : 0) {
+            case 1:
+                getTasksSortByAscTaskName();
+                idSort = 1;
+                // code block
+                break;
+            case 2:
+                getTasksSortByDescTaskName();
+                idSort = 2;
+                // code block
+                break;
+            case 3:
+                getTasksSortByAscNumberTime();
+                idSort = 3;
+                // code block
+                break;
+            case 4:
+                getTasksSortByDescNumberTime();
+                idSort = 4;
+                // code block
+                break;
+            case 5:
+                getTasksSortByAscProjectName();
+                idSort = 5;
+                // code block
+                break;
+            case 6:
+                getTasksSortByDescProjectName();
+                idSort = 6;
+                // code block
+                break;
+            default:
+                getTasks();
+                // code block
+        }
+
     }
 
     private void configureViewModel() {
@@ -94,6 +126,30 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         mTaskViewModel.getTasks().observe(this, this::updateTasks);
     }
 
+    private void getTasksSortByDescProjectName() {
+        mTaskViewModel.getTasksSortByDescProjectName().observe(this, this::updateTasks);
+    }
+
+    private void getTasksSortByAscProjectName() {
+        mTaskViewModel.getTasksSortByAscProjectName().observe(this, this::updateTasks);
+    }
+
+    private void getTasksSortByAscNumberTime() {
+        mTaskViewModel.getTasksSortByAscNumberTime().observe(this, this::updateTasks);
+    }
+
+    private void getTasksSortByDescNumberTime() {
+        mTaskViewModel.getTasksSortByDescNumberTime().observe(this, this::updateTasks);
+    }
+
+    private void getTasksSortByAscTaskName() {
+        mTaskViewModel.getTasksSortByAscTaskName().observe(this, this::updateTasks);
+    }
+
+    private void getTasksSortByDescTaskName() {
+        mTaskViewModel.getTasksSortByDescTaskName().observe(this, this::updateTasks);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actions, menu);
@@ -104,41 +160,51 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.filter_alphabetical :
-                sortMethod = SortMethod.ALPHABETICAL;
-                getTasks();
+            case R.id.filter_alphabetical:
+                idSort = 1 ;
+                getTasksSortByAscTaskName();
                 return true;
             case R.id.filter_alphabetical_inverted:
-                sortMethod = SortMethod.ALPHABETICAL_INVERTED;
-                getTasks();
+                idSort = 2 ;
+                getTasksSortByDescTaskName();
                 return true;
-            case R.id.filter_oldest_first :
-                sortMethod = SortMethod.OLD_FIRST;
-                getTasks();
+            case R.id.filter_oldest_first:
+                idSort = 3 ;
+                getTasksSortByAscNumberTime();
                 return true;
-            case R.id.filter_recent_first :
-                sortMethod = SortMethod.RECENT_FIRST;
-                getTasks();
+            case R.id.filter_recent_first:
+                idSort = 4 ;
+                getTasksSortByDescNumberTime();
                 return true;
 
             case R.id.filter_alphabeticalProject:
-                sortMethod = SortMethod.ALPHABETICAL_PROJECT;
-                getTasks();
+                idSort = 5;
+                getTasksSortByAscProjectName();
+
                 return true;
 
             case R.id.filter_alphabetical_invertedProject:
-                sortMethod = SortMethod.ALPHABETICAL_INVERTED_PROJECT;
-                getTasks();
+                idSort = 6;
+                getTasksSortByDescProjectName();
+
                 return true;
 
             default:
-
+                getTasks();
                 return super.onOptionsItemSelected(item);
 
         }
-
-
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putInt("idSort", idSort);
+
+        super.onSaveInstanceState(outState);
+    }
+
+
 
     @Override
     public void onDeleteTask(Task task) {
@@ -180,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 dialogInterface.dismiss();
             }
             // If name has been set, but project has not been set (this should never occur)
-            else{
+            else {
                 dialogInterface.dismiss();
             }
         }
@@ -224,28 +290,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         } else {
             lblNoTasks.setVisibility(View.GONE);
             listTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(tasks, new Task.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new Task.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(tasks, new Task.TaskOldComparator());
-                    break;
 
-                case ALPHABETICAL_PROJECT:
-                    Collections.sort(tasks, new Task.TaskAZProjectComparator());
-                    break;
-                case ALPHABETICAL_INVERTED_PROJECT:
-                    Collections.sort(tasks, new Task.TaskZAProjectComparator());
-                    break;
-
-            }
             adapter.updateTasks(tasks);
         }
     }
@@ -291,20 +336,4 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         }
     }
 
-    private enum SortMethod {
-
-        ALPHABETICAL,
-
-        ALPHABETICAL_INVERTED,
-
-        RECENT_FIRST,
-
-        OLD_FIRST,
-
-        ALPHABETICAL_PROJECT,
-
-        ALPHABETICAL_INVERTED_PROJECT,
-
-        NONE
-    }
 }

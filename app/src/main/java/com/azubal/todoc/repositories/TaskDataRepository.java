@@ -14,10 +14,6 @@ public class TaskDataRepository {
         mTaskDao = taskDao;
     }
 
-    public LiveData<List<Task>> getTasks() {
-        return mTaskDao.getTasks();
-    }
-
     public void createTask(Task task) {
         mTaskDao.insertTask(task);
     }
@@ -27,4 +23,21 @@ public class TaskDataRepository {
     }
 
     public void deleteAllTask(){mTaskDao.deleteAllTask();}
+
+    public LiveData<List<Task>> getTasks() {
+        return mTaskDao.getTasks();
+    }
+
+
+
+    public LiveData<List<Task>>  getTasksSortByAscName(){ return mTaskDao.getTasksSortByAscName();}
+    public LiveData<List<Task>>  getTasksSortByDescName(){ return mTaskDao.getTasksSortByDescName();}
+
+    public LiveData<List<Task>>  getTasksSortByAscNumberTime(){return mTaskDao.getTasksSortByAscNumberTime();}
+    public LiveData<List<Task>>  getTasksSortByDescNumberTime(){return mTaskDao.getTasksSortByDescNumberTime();}
+
+    public LiveData<List<Task>>  getTasksSortByAscProjectName(){return mTaskDao.getTasksSortByAscProjectName();}
+    public LiveData<List<Task>>  getTasksSortByDescProjectName(){return mTaskDao.getTasksSortByDescProjectName();}
+
+
 }
